@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRUD TABLE EXAMPLE</title>
+    <style>
+        table {
+            border-collapse: collapse;/*它会将相邻单元格的边框合并成一个边框，从而消除了它们之间的间距。*/
+            width: 100%;
+            margin-top: 20px;
+        }
+        th, td { 
+            padding: 15px; 
+            text-align: center; 
+            border: 1px solid #ddd; 
+        }
+        th { 
+            background-color: #f2f2f2; 
+        }
+        button { 
+            margin-top: 10px; 
+        }
+    </style>
+</head>
+<body>
+    <h2 style="text-align: center;">CRUD TABLE Example</h2>
+    <button onclick="addRow()">Add Row</button>
+    <table id="datatable">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>John Doe</td>
+                <td>qyO5w@example.com</td>
+                <td>
+                    <button onclick="editRow(this)">Edit</button>
+                    <button onclick="deleteRow(this)">Delete</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <script src="./js/script.js"></script>
+</body>
+</html>

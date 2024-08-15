@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>表单</title>
+</head>
+<body>
+    <form>
+        <span>用户名：</span>
+        <input type="text" placeholder="文本框默认显示内容">
+        <span>密码：</span>
+        <input type="text" value="文本框默认填充内容">
+        <br>
+        <br>
+        <label>用户名：</label>
+        <input type="text" placeholder="请输入内容">
+        <label for="pwd">密码：</label>
+        <input type="password" id="pwd" placeholder="请输入密码">
+        <br>
+        <br>
+        <label>仅限于form内和input配套使用</label>
+        <input type="text" placeholder="文本框默认显示内容">
+        <label>密码：</label>
+        <input type="text" value="文本框默认填充内容">
+
+        <br>
+        <br>
+        <label>性别</label>
+        <input type="radio"> 男
+        <input type="radio"> 女
+        <input type="radio"> 未知
+        <br>
+        <br>
+        <label>实现单选</label>
+        <input type="radio" name="gender"> 男
+        <input type="radio" name="gender"> 女
+        <input type="radio"name="gender"> 未知
+        <br>
+        <br>
+        <label>实现多选</label>
+        <input type="checkbox" name="hobbies"> 篮球
+        <input type="checkbox" name="hobbies"> 足球
+        <input type="checkbox" name="hobbies"> 未知
+        <br>
+        <br>
+        <input type="submit" value="登录">
+    </form>
+    <!-- # 表示占位，不跳转；action 的作用是 submit 时执行，数据将发送到那个URL。 -->
+    <form action="#"></form>
+</body>
+</html>
