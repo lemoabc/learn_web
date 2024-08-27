@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 中国色</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&display=swap');
+        body {
+            font-family: 'Noto Serif SC', serif;
+        }
+        .color-block {
+            transition: all 0.3s ease;
+        }
+        .color-block:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body class="bg-gray-100 transition-all duration-500">
+    <div class="container mx-auto px-4 py-8">
+        <header class="text-center mb-8">
+            <h1 class="text-6xl font-bold mb-2 transition-all duration-500" id="mainTitle">AI 中国色</h1>
+            <p class="text-xl">CHINESE COLORS</p>
+        </header>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-7 gap-4" id="colorGrid">
+            <!-- Color blocks will be dynamically inserted here -->
+        </div>
+
+        <div class="mt-8 text-center" id="colorInfo" style="display: none;">
+            <div class="flex justify-center space-x-4 mb-4">
+                <div class="w-16 h-16 rounded-full" id="cmykC"></div>
+                <div class="w-16 h-16 rounded-full" id="cmykM"></div>
+                <div class="w-16 h-16 rounded-full" id="cmykY"></div>
+                <div class="w-16 h-16 rounded-full" id="cmykK"></div>
+            </div>
+            <div class="flex justify-center space-x-4">
+                <div id="rgbR"></div>
+                <div id="rgbG"></div>
+                <div id="rgbB"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const colors = [
+            { name: "玉红", pinyin: "yuhong", hex: "#C04851", cmyk: [0, 62, 57, 25], rgb: [192, 72, 81] },
+            { name: "茶花红", pinyin: "chahuahong", hex: "#EE3F4D", cmyk: [0, 73, 67, 7], rgb: [238, 63, 77] },
+            // Add more colors here...
+        ];
+
+        const colorGrid = document.getElementById('colorGrid');
+        const mainTitle = document.getElementById('mainTitle');
+        const colorInfo = document.getElementById('colorInfo');
+
+        function createColorBlock(color) {
+            const block = document.createElement('div');
+            block.className = 'color-block p-4 rounded-lg text-white cursor-pointer transition-all duration-300';
+            block.style.backgroundColor = color.hex;
+            block.innerHTML = `
+                <h3 class="text-lg font-bold">${color.name}</h3>
+                <p class="text-sm">${color.pinyin}</p>
+            `;
+            block.addEventListener('click', () => setColor(color));
+            return block;
+        }
+
+        function setColor(color) {
+            document.body.style.backgroundColor = color.hex;
+            mainTitle.textContent = color.name;
+            mainTitle.style.color = 'white';
+            mainTitle.style.backgroundColor = color.hex;
+            updateColorInfo(color);
+        }
+
+        function updateColorInfo(color) {
+            colorInfo.style.display = 'block';
+            document.getElementById('cmykC').style.backgroundColor = `rgba(0, 255, 255, ${1 - color.cmyk[0]/100})`;
+            document.getElementById('cmykM').style.backgroundColor = `rgba(255, 0, 255, ${1 - color.cmyk[1]/100})`;
+            document.getElementById('cmykY').style.backgroundColor = `rgba(255, 255, 0, ${1 - color.cmyk[2]/100})`;
+            document.getElementById('cmykK').style.backgroundColor = `rgba(0, 0, 0, ${color.cmyk[3]/100})`;
+            document.getElementById('rgbR').textContent = `R: ${color.rgb[0]}`;
+            document.getElementById('rgbG').textContent = `G: ${color.rgb[1]}`;
+            document.getElementById('rgbB').textContent = `B: ${color.rgb[2]}`;
+        }
+
+        // Lazy loading implementation
+        let currentIndex = 0;
+        const batchSize = 28; // Load 28 colors at a time (4 rows of 7 columns)
+
+        function loadMoreColors() {
+            const fragment = document.createDocumentFragment();
+            const end = Math.min(currentIndex + batchSize, colors.length);
+            for (let i = currentIndex; i < end; i++) {
+                fragment.appendChild(createColorBlock(colors[i]));
+            }
+            colorGrid.appendChild(fragment);
+            currentIndex = end;
+            if (currentIndex >= colors.length) {
+                window.removeEventListener('scroll', checkScroll);
+            }
+        }
+
+        function checkScroll() {
+            if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 500) {
+                loadMoreColors();
+            }
+        }
+
+        window.addEventListener('scroll', checkScroll);
+        loadMoreColors(); // Initial load
+    </script>
+</body>
+</html>

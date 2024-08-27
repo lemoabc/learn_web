@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 中国色</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&display=swap');
+        body {
+            font-family: 'Noto Serif SC', serif;
+            background-color: #f7f6f2;
+        }
+        .color-block {
+            transition: all 0.3s ease;
+        }
+        .color-block:hover {
+            filter: brightness(1.1);
+        }
+        .color-row:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+    </style>
+</head>
+<body class="transition-all duration-500">
+    <div class="container mx-auto px-4 py-8 flex">
+        <div class="w-3/4 pr-8">
+            <div id="colorGrid" class="space-y-2">
+                <!-- Color rows will be dynamically inserted here -->
+            </div>
+        </div>
+        <div class="w-1/4">
+            <div class="sticky top-8">
+                <h1 class="text-6xl font-bold mb-2 text-right" id="mainTitle">AI</h1>
+                <h2 class="text-5xl font-bold mb-4 text-right whitespace-nowrap" id="subTitle">中国色</h2>
+                <p class="text-xl text-right mb-8">CHINESE COLORS</p>
+                <div id="colorInfo" class="text-right space-y-4" style="display: none;">
+                    <div class="flex justify-end space-x-2">
+                        <div class="w-8 h-8 rounded-full" id="cmykC"></div>
+                        <div class="w-8 h-8 rounded-full" id="cmykM"></div>
+                        <div class="w-8 h-8 rounded-full" id="cmykY"></div>
+                        <div class="w-8 h-8 rounded-full" id="cmykK"></div>
+                    </div>
+                    <div id="cmykValues" class="text-sm"></div>
+                    <div id="rgbValues" class="text-sm"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const colors = [
+            { name: "玉红", pinyin: "YUHONG", hex: "#C04851", cmyk: [0, 62, 57, 25], rgb: [192, 72, 81] },
+            { name: "茶花红", pinyin: "CHAHUAHONG", hex: "#EE3F4D", cmyk: [0, 73, 67, 7], rgb: [238, 63, 77] },
+            // Add more colors here...
+        ];
+
+        const colorGrid = document.getElementById('colorGrid');
+        const mainTitle = document.getElementById('mainTitle');
+        const subTitle = document.getElementById('subTitle');
+        const colorInfo = document.getElementById('colorInfo');
+
+        function createColorRow(color) {
+            const row = document.createElement('div');
+            row.className = 'color-row flex items-center space-x-2 py-1 px-2 rounded cursor-pointer';
+            
+            const colorBar = document.createElement('div');
+            colorBar.className = 'w-20 h-1';
+            colorBar.style.backgroundColor = color.hex;
+
+            const nameDiv = document.createElement('div');
+            nameDiv.className = 'w-16 text-center';
+            nameDiv.textContent = color.name;
+
+            const pinyinDiv = document.createElement('div');
+            pinyinDiv.className = 'flex-grow text-xs text-gray-500';
+            pinyinDiv.textContent = color.pinyin;
+
+            row.appendChild(colorBar);
+            row.appendChild(nameDiv);
+            row.appendChild(pinyinDiv);
+
+            row.addEventListener('click', () => setColor(color));
+            return row;
+        }
+
+        function setColor(color) {
+            document.body.style.backgroundColor = color.hex;
+            mainTitle.textContent = color.name;
+            subTitle.textContent = color.pinyin;
+            updateColorInfo(color);
+        }
+
+        function updateColorInfo(color) {
+            colorInfo.style.display = 'block';
+            document.getElementById('cmykC').style.backgroundColor = `rgba(0, 255, 255, ${1 - color.cmyk[0]/100})`;
+            document.getElementById('cmykM').style.backgroundColor = `rgba(255, 0, 255, ${1 - color.cmyk[1]/100})`;
+            document.getElementById('cmykY').style.backgroundColor = `rgba(255, 255, 0, ${1 - color.cmyk[2]/100})`;
+            document.getElementById('cmykK').style.backgroundColor = `rgba(0, 0, 0, ${color.cmyk[3]/100})`;
+            document.getElementById('cmykValues').textContent = `C:${color.cmyk[0]} M:${color.cmyk[1]} Y:${color.cmyk[2]} K:${color.cmyk[3]}`;
+            document.getElementById('rgbValues').textContent = `R:${color.rgb[0]} G:${color.rgb[1]} B:${color.rgb[2]}`;
+        }
+
+        // Load all colors at once for this example
+        colors.forEach(color => {
+            colorGrid.appendChild(createColorRow(color));
+        });
+    </script>
+</body>
+</html>
